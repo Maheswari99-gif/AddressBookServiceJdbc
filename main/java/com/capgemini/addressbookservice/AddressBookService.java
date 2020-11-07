@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AddressBookService {
-	ContactDetails contactObj = null;
+	ContactDetails contactDetails = null;
 	private List<ContactDetails> contactList;
 
 	public AddressBookService(List<ContactDetails> contactList) {
@@ -81,10 +81,10 @@ public class AddressBookService {
 			preparedStatement.setString(2, zip);
 			preparedStatement.setString(3, firstName);
 			int result = preparedStatement.executeUpdate();
-			contactObj = getContactDetails(firstName);
+			contactDetails = getContactDetails(firstName);
 			if (result > 0 && contactObj != null) {
-				contactObj.setState(state);
-				contactObj.setZip(zip);
+				contactDetails.setState(state);
+				contactDetails.setZip(zip);
 			}
 		} catch (Exception e) {
 			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
@@ -178,7 +178,7 @@ public class AddressBookService {
 			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			int result = preparedStatement.executeUpdate();
 			if (result == 1)
-				contactObj = new ContactDetails(firstName, lastName, address_name, addressType, address, city, state,
+				contactDetails = new ContactDetails(firstName, lastName, address_name, addressType, address, city, state,
 						zip, phoneNumber, email, date);
 			viewAddressBookService().add(contactObj);
 		} catch (Exception e) {
