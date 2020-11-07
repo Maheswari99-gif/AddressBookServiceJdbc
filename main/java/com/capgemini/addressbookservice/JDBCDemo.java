@@ -22,7 +22,7 @@ public class JDBCDemo {
 	static String password = "Mahihari@99";
 	private static Connection con = null;
 
-	public static Connection getConnection() {
+	public synchronized static Connection getConnection() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			con = DriverManager.getConnection(url, userName, password);

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,24 @@ public class AddressBookServiceTest {
 				"123489764", "keerthi@gmail.com", "2017-05-09");
 		boolean result = serviceObj.isSynced("Keerthi");
 		assertTrue(result);
+	}
+	@Test
+	public void givenMultipleContact_WhenAdded_ShouldSyncWithDB() throws DBException {
+		ContactDetails[] contArr= {
+								new ContactDetails("Mahi","Koyyani","Family_Book","Family","Palakollu",
+										"AP","AP","123456","1200120012", "mahi@gmail.com","2014-04-04"),
+								new ContactDetails("Hari","Koyyani","Family_Book","Family","Palakollu","AP",
+										"AP","123456","1200120012","hari@gmail.com","2016-07-19"),
+								new ContactDetails("Sri","Dokkala","Friend_Book","Friend","Palakollu","AP",
+										"AP", "123456","1200120012","sri@yahoo.com","2018-06-05"),
+		};
+		serviceObj.insertNewContactsWithThreads(Arrays.asList(contArr));
+		boolean result1 = serviceObj.isSynced("Mahi");
+		boolean result2 = serviceObj.isSynced("Hari");
+		boolean result3 = serviceObj.isSynced("Sri");
+		assertTrue(result1);
+		assertTrue(result2);
+		assertTrue(result3);
 	}
 
 

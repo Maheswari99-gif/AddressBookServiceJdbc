@@ -7,6 +7,7 @@ public class ContactDetails {
 	private String address, zip, state;
 	private String phoneNumber;
 	private String addressType, address_name;
+	private String date;
 
 	public int getId() {
 		return id;
@@ -94,6 +95,12 @@ public class ContactDetails {
 
 	public void setAddress_name(String address_name) {
 		this.address_name = address_name;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public ContactDetails(int id, String firstName, String lastName, String address, String city, String state,

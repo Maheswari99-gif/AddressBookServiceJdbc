@@ -171,7 +171,7 @@ public class AddressBookService {
 			String addressType, String address, String city, String state, String zip, String phoneNumber, String email,
 			String date) throws DBException {
 		String sql = String.format(
-				"insert into address_book (first_name,last_name,address_name,address_type,address,city,state,zip,phone_number,email,date_added)"
+				"insert into address_book (firstName,lastName,address_name,address_type,address,city,state,zip,phoneNumber,email,date_added)"
 						+ " values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');",
 				firstName, lastName, address_name, addressType, address, city, state, zip, phoneNumber, email, date);
 		try (Connection con = JDBCDemo.getConnection()) {
@@ -185,5 +185,39 @@ public class AddressBookService {
 			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
 		}
 		return viewAddressBookService();
+	}
+	/**
+	 * 
+	 * @param contactList
+	 * @throws DBException
+	 */
+	public void insertNewContactsWithThreads(List<ContactDetails> contactList) throws DBException {
+		Map<Integer, Boolean> contactAditionStatus = new HashMap<>();
+		contactList.forEach(contact -> {
+			Runnable task = () -> {
+				contactAditionStatus.put(contact.hashCode(), false);
+				System.out.println("Contact which is  being added : " + contact.getFirstName());
+				try {
+					insertNewContacts(contact.getFirstName(),contact.getLastName(),contact.getAddress_name(),contact.getAddressType(),
+							contact.getAddress(),contact.getCity(), contact.getState(), contact.getZip(),
+							contact.getPhoneNumber(), contact.getEmailId(),contact.getDate());
+				} catch (DBException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				contactAditionStatus.put(contact.hashCode(), true);
+				System.out.println("Contact added : " + contact.getFirstName());
+			};
+			Thread thread = new Thread(task, contact.getFirstName());
+			thread.start();
+		});
+
+		while (contactAditionStatus.containsValue(false)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
