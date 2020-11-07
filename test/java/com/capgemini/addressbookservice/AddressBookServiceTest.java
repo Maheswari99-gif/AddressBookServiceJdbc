@@ -1,6 +1,7 @@
 package com.capgemini.addressbookservice;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,12 @@ public class AddressBookServiceTest {
 	public void givenAddressBookDB_WhenRetrieved_ShouldMatchContactsCount() throws DBException {
 		contactsList = serviceObj.viewAddressBookService();
 		assertEquals(6, contactsList.size());
+	}
+	@Test
+	public void givenUpdatedContacts_WhenRetrieved_ShouldBeSyncedWithDB() throws DBException {
+		serviceObj.updateContactDetails("City D", "986754", "Ambani");
+		boolean result = serviceObj.isSynced("Ambani");
+		assertTrue(result);
 	}
 
 }
