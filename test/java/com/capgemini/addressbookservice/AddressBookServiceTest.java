@@ -3,6 +3,7 @@ package com.capgemini.addressbookservice;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,12 @@ public class AddressBookServiceTest {
 		boolean result = serviceObj.isSynced("Ambani");
 		assertTrue(result);
 	}
+	@Test
+	public void givenDateRange_WhenRetrieved_ShouldMatchContactsCount() throws DBException{
+		contactsList = serviceObj.getContactsByDate(LocalDate.of(2015,01,01), LocalDate.now() );
+		assertEquals(3, contactsList.size());
+	}
+
 
 }
 

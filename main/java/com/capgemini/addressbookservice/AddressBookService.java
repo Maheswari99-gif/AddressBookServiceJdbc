@@ -12,6 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.capgemini.addressbookjdbc.ContactDetails;
+import com.capgemini.addressbookjdbc.DBServiceException;
+import com.capgemini.addressbookjdbc.DBServiceExceptionType;
+import com.capgemini.addressbookjdbc.JDBCDemo;
+
+
 public class AddressBookService {
 	ContactDetails contactObj = null;
 	private List<ContactDetails> contactList;
@@ -74,7 +80,7 @@ public class AddressBookService {
 	}
 
 	public void updateContactDetails(String state, String zip, String firstName) throws DBException {
-		String query = "update address_book set state = ? , zip = ? where first_name = ?";
+		String query = "update addressbookservice set state = ? , zip = ? where first_name = ?";
 		try (Connection con = JDBCDemo.getConnection()) {
 			PreparedStatement preparedStatement = con.prepareStatement(query);
 			preparedStatement.setString(1, state);
@@ -104,5 +110,28 @@ public class AddressBookService {
 			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
 		}
 		return false;
+	}
+	/**
+	 * 
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 * @throws DBServiceException
+	 */
+
+	public List<ContactDetails> getContactsByDate(LocalDate startDate, LocalDate endDate)
+			throws DBException {
+		List<ContactDetails> contactsListByDate = new ArrayList<>();
+		String query = "select * from addressbookservice where date between ? and  ?";
+		try (Connection con = JDBCDemo.getConnection()) {
+			PreparedStatement preparedStatement = con.prepareStatement(query);
+			preparedStatement.setDate(1, Date.valueOf(startDate));
+			preparedStatement.setDate(2, Date.valueOf(endDate));
+			ResultSet resultSet = preparedStatement.executeQuery();
+	        contactsListByDate=getResultSet(resultSet);
+			} catch (Exception e) {
+			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
+		}
+		return contactsListByDate;
 	}
 }
