@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AddressBookService {
-	ContactDetails contactObj = null;
+	ContactDetails contactDetails = null;
 	private List<ContactDetails> contactList;
 
 	public AddressBookService(List<ContactDetails> contactList) {
@@ -81,10 +81,10 @@ public class AddressBookService {
 			preparedStatement.setString(2, zip);
 			preparedStatement.setString(3, firstName);
 			int result = preparedStatement.executeUpdate();
-			contactObj = getContactDetails(firstName);
-			if (result > 0 && contactObj != null) {
-				contactObj.setState(state);
-				contactObj.setZip(zip);
+			contactDetails = getContactDetails(firstName);
+			if (result > 0 && contactDetails != null) {
+				contactDetails.setState(state);
+				contactDetails.setZip(zip);
 			}
 		} catch (Exception e) {
 			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
@@ -178,14 +178,15 @@ public class AddressBookService {
 			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			int result = preparedStatement.executeUpdate();
 			if (result == 1)
-				contactObj = new ContactDetails(firstName, lastName, address_name, addressType, address, city, state,
-						zip, phoneNumber, email, date);
-			viewAddressBookService().add(contactObj);
+				contactDetails = new ContactDetails(firstName, lastName, address_name, addressType, address, city,
+						state, zip, phoneNumber, email, date);
+			viewAddressBookService().add(contactDetails);
 		} catch (Exception e) {
 			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
 		}
 		return viewAddressBookService();
 	}
+
 	/**
 	 * 
 	 * @param contactList
@@ -198,9 +199,9 @@ public class AddressBookService {
 				contactAditionStatus.put(contact.hashCode(), false);
 				System.out.println("Contact which is  being added : " + contact.getFirstName());
 				try {
-					insertNewContacts(contact.getFirstName(),contact.getLastName(),contact.getAddress_name(),contact.getAddressType(),
-							contact.getAddress(),contact.getCity(), contact.getState(), contact.getZip(),
-							contact.getPhoneNumber(), contact.getEmailId(),contact.getDate());
+					insertNewContacts(contact.getFirstName(), contact.getLastName(), contact.getAddress_name(),
+							contact.getAddressType(), contact.getAddress(), contact.getCity(), contact.getState(),
+							contact.getZip(), contact.getPhoneNumber(), contact.getEmailId(), contact.getDate());
 				} catch (DBException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -219,5 +220,13 @@ public class AddressBookService {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public long countEmployees() {
+		return contactList.size();
+	}
+
+	public void addContactDetails(ContactDetails contact) {
+		contactList.add(contact);
 	}
 }

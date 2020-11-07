@@ -1,0 +1,38 @@
+{
+	"contacts":
+[
+  {
+    "contactId": 1,
+    "firstName": "Vaishnavi",
+    "lastName": "Bhavaraju",
+    "address": "S.R.Nagar",
+    "city": "Vizag",
+    "state": "AP",
+    "zip": 123456,
+    "phoneNumber": 123456734,
+    "email": "vaishu@gmail.com"
+  },
+  {
+    "contactId": 2,
+    "firstName": "Sravani",
+    "lastName": "Vanama",
+    "address": "Begumpet",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "zip": 123475,
+    "phoneNumber": 1200120012,
+    "email": "sravani@gmail.com"
+  },
+  {
+    "contactId": 3,
+    "firstName": "Mahi",
+    "lastName": "Koyyani",
+    "address": "M.G.colony",
+    "city": "Palakollu",
+    "state": "AP",
+    "zip": 123456,
+    "phoneNumber": 8684563221,
+    "email": "mahi@gmail.com"
+  }
+]
+}
