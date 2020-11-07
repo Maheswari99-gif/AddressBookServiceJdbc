@@ -12,11 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.capgemini.addressbookjdbc.ContactDetails;
-import com.capgemini.addressbookjdbc.DBServiceException;
-import com.capgemini.addressbookjdbc.DBServiceExceptionType;
-import com.capgemini.addressbookjdbc.JDBCDemo;
-
 
 public class AddressBookService {
 	ContactDetails contactObj = null;
@@ -133,5 +128,26 @@ public class AddressBookService {
 			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
 		}
 		return contactsListByDate;
+	}
+	/**
+	 * 
+	 * @param column
+	 * @return
+	 * @throws DBServiceException
+	 */
+
+	public Map<String, Integer> countContactsByState(String column) throws DBException {
+		Map<String, Integer> contactsCount = new HashMap<>();
+		String query = String.format("SELECT state, COUNT(first_name) AS count FROM contact group by state;");
+		try (Connection con = JDBCDemo.getConnection()) {
+			PreparedStatement preparedStatement = con.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				contactsCount.put(resultSet.getString(1), resultSet.getInt(2));
+			}
+		} catch (Exception e) {
+			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
+		}
+		return contactsCount;
 	}
 }
