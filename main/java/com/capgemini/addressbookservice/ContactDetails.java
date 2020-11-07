@@ -95,17 +95,32 @@ public class ContactDetails {
 	public void setAddress_name(String address_name) {
 		this.address_name = address_name;
 	}
-	public ContactDetails(int id,String firstName, String lastName, String address, String city, String state, String zip,
-			String phoneNumber, String emailId) {
-		this.id=id;
+
+	public ContactDetails(int id, String firstName, String lastName, String address, String city, String state,
+			String zip, String phoneNumber, String emailId) {
+		this.id = id;
 		this.firstName = firstName;
-		this.lastName = lastName; 
+		this.lastName = lastName;
 		this.address = address;
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
 		this.phoneNumber = phoneNumber;
 		this.emailId = emailId;
+	}
+
+	public ContactDetails(String firstName, String lastName, String address_name, String addressType, String address,
+			String city, String state, String zip, String phoneNo, String email, String date) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emailId = email;
+		this.city = city;
+		this.address = address;
+		this.zip = zip;
+		this.state = state;
+		this.phoneNumber = phoneNo;
+		this.addressType = addressType;
+		this.address_name = address_name;
 	}
 
 	public ContactDetails(int id, String firstName, String lastName, String address_name, String addressType,
@@ -127,9 +142,8 @@ public class ContactDetails {
 	@Override
 	public String toString() {
 		return "Contacts [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
-				+ ", city=" + city + ", address=" + address + ", zip=" + zip + ", state="
-				+ state + ", phoneNumber=" + phoneNumber + ", addressType=" + addressType + ", address_name="
-				+ address_name + "]";
+				+ ", city=" + city + ", address=" + address + ", zip=" + zip + ", state=" + state + ", phoneNumber="
+				+ phoneNumber + ", addressType=" + addressType + ", address_name=" + address_name + "]";
 	}
 
 	public boolean equals(Object obj) {

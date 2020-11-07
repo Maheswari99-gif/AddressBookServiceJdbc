@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class AddressBookService {
 	ContactDetails contactObj = null;
 	private List<ContactDetails> contactList;
@@ -106,6 +105,7 @@ public class AddressBookService {
 		}
 		return false;
 	}
+
 	/**
 	 * 
 	 * @param startDate
@@ -114,8 +114,7 @@ public class AddressBookService {
 	 * @throws DBServiceException
 	 */
 
-	public List<ContactDetails> getContactsByDate(LocalDate startDate, LocalDate endDate)
-			throws DBException {
+	public List<ContactDetails> getContactsByDate(LocalDate startDate, LocalDate endDate) throws DBException {
 		List<ContactDetails> contactsListByDate = new ArrayList<>();
 		String query = "select * from addressbookservice where date between ? and  ?";
 		try (Connection con = JDBCDemo.getConnection()) {
@@ -123,12 +122,13 @@ public class AddressBookService {
 			preparedStatement.setDate(1, Date.valueOf(startDate));
 			preparedStatement.setDate(2, Date.valueOf(endDate));
 			ResultSet resultSet = preparedStatement.executeQuery();
-	        contactsListByDate=getResultSet(resultSet);
-			} catch (Exception e) {
+			contactsListByDate = getResultSet(resultSet);
+		} catch (Exception e) {
 			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
 		}
 		return contactsListByDate;
 	}
+
 	/**
 	 * 
 	 * @param column
@@ -149,5 +149,41 @@ public class AddressBookService {
 			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
 		}
 		return contactsCount;
+	}
+
+	/**
+	 * 
+	 * @param firstName
+	 * @param lastName
+	 * @param address_name
+	 * @param addressType
+	 * @param address
+	 * @param city
+	 * @param state
+	 * @param zip
+	 * @param phoneNo
+	 * @param email
+	 * @param date
+	 * @return
+	 * @throws DBServiceException
+	 */
+	public List<ContactDetails> insertNewContacts(String firstName, String lastName, String address_name,
+			String addressType, String address, String city, String state, String zip, String phoneNumber, String email,
+			String date) throws DBException {
+		String sql = String.format(
+				"insert into address_book (first_name,last_name,address_name,address_type,address,city,state,zip,phone_number,email,date_added)"
+						+ " values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');",
+				firstName, lastName, address_name, addressType, address, city, state, zip, phoneNumber, email, date);
+		try (Connection con = JDBCDemo.getConnection()) {
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
+			int result = preparedStatement.executeUpdate();
+			if (result == 1)
+				contactObj = new ContactDetails(firstName, lastName, address_name, addressType, address, city, state,
+						zip, phoneNumber, email, date);
+			viewAddressBookService().add(contactObj);
+		} catch (Exception e) {
+			throw new DBException("SQL Exception", DBExceptionType.SQL_EXCEPTION);
+		}
+		return viewAddressBookService();
 	}
 }
