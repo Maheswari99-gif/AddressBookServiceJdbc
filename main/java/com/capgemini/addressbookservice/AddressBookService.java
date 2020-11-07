@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AddressBookService {
-	ContactDetails contactObj = null;
+	ContactDetails contactDetails = null;
 	private List<ContactDetails> contactList;
 	public AddressBookService(List<ContactDetails> contactList) {
 		this.contactList = new ArrayList<>(contactList);
